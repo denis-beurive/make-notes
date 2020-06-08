@@ -1,5 +1,12 @@
 # Notes about MAKE
 
+## Append text to a variable
+
+You have to use `:=`, instead of `=`:
+
+	VAR := hello
+	VAR := $(VAR)_world
+
 ## $@, $<, $^...
 
 	* `$@`: is the name of the file being generated.
@@ -19,7 +26,7 @@ Examples:
 	_DIR_ = $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 	__DIR__ = $(_DIR_:/=)
 
-## Test that a command line parameter is defined
+## Test if a command line parameter is defined
 
 	ifndef OS
 	$(error "OS is not set! Usage: make OS=(mac|linux) <rule> ")
@@ -56,6 +63,7 @@ Examples:
 ## Get the list of all ".c" and build the list of all associated ".o"
 
 	# Build the list of all associated ".o" files.
+	# Replace "$(LOCAL_SRC_DIRECTORY)" by "$(LOCAL_LIB_DIRECTORY)" (=> the ".o" files will be created into the directory "$(LOCAL_LIB_DIRECTORY)"). 
 	LIB_SRC = $(subst $(LOCAL_SRC_DIRECTORY),$(LOCAL_LIB_DIRECTORY),$(patsubst %.c,%.o,$(wildcard ${LOCAL_SRC_DIRECTORY}/*.c)))
 
 	# Build all "*.o" files from all "*.c" files.
